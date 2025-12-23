@@ -19,7 +19,23 @@ def remove_wall(
     :return:
     """
 
-    pass
+    x, y = coord
+    rows, cols = len(grid), len(grid[0])
+
+    directions: List[Tuple[int, int]] = []
+    if x - 2 >= 0:
+        directions.append((-2, 0))
+    if y + 2 < cols:
+        directions.append((0, 2))
+
+    if not directions:
+        return grid
+
+    step_x, step_y = choice(directions)
+    next_x, next_y = x + step_x, y + step_y
+    wall_x, wall_y = (x + next_x) // 2, (y + next_y) // 2
+    grid[wall_x][wall_y] = " "
+    return grid
 
 
 def bin_tree_maze(
@@ -69,7 +85,22 @@ def get_exits(grid: List[List[Union[str, int]]]) -> List[Tuple[int, int]]:
     :return:
     """
 
-    pass
+    rows, cols = len(grid), len(grid[0])
+    exits: List[Tuple[int, int]] = []
+
+    for j in range(cols):
+        if grid[0][j] == 'X':
+            exits.append((0, j))
+        if grid[rows - 1][j] == 'X':
+            exits.append((rows - 1, j))
+
+    for i in range(1, rows - 1):
+        if grid[i][0] == 'X':
+            exits.append((i, 0))
+        if grid[i][cols - 1] == 'X':
+            exits.append((i, cols - 1))
+
+    return exits
 
 
 def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str, int]]]:
@@ -80,7 +111,6 @@ def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str,
     :return:
     """
 
-    pass
 
 
 def shortest_path(
