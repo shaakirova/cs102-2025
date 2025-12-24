@@ -100,7 +100,19 @@ def make_step(grid: List[List[Union[str, int]]], k: int) -> List[List[Union[str,
     :param k:
     :return:
     """
+    rows, cols = len(grid), len(grid[0])
+    next_k = k + 1
+    new_grid = deepcopy(grid)
 
+    for x in range(rows):
+        for y in range(cols):
+            if grid[x][y] != k:
+                continue
+            for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+                nx, ny = x + dx, y + dy
+                if 0 <= nx < rows and 0 <= ny < cols and new_grid[nx][ny] == 0:
+                    new_grid[nx][ny] = next_k
+    return new_grid
 
 
 def shortest_path(
@@ -112,7 +124,35 @@ def shortest_path(
     :param exit_coord:
     :return:
     """
-    pass
+    rows, cols = len(grid), len(grid[0])
+    path = []
+    x, y = exit_coord
+    k = grid[x][y]
+
+    if not isinstance(k, int) or k <= 0:
+        return None
+
+    path.append((x, y))
+    while k > 1:
+        found = False
+        for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+            nx, ny = x + dx, y + dy
+            if 0 <= nx < rows and 0 <= ny < cols and grid[nx][ny] == k - 1:
+                path.append((nx, ny))
+                x, y = nx, ny
+                k -= 1
+                found = True
+                break
+        if not found:
+            grid[path[-1][0]][path[-1][1]] = " "
+            path.pop()
+            if not path:
+                return None
+            x, y = path[-1]
+            k = grid[x][y]
+
+    return path
+
 
 
 def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) -> bool:
@@ -122,9 +162,19 @@ def encircled_exit(grid: List[List[Union[str, int]]], coord: Tuple[int, int]) ->
     :param coord:
     :return:
     """
+    x, y = coord
+    rows, cols = len(grid), len(grid[0])
 
-    pass
+    if x not in (0, rows - 1) and y not in (0, cols - 1):
+        return False
 
+    walls = 0
+    for dx, dy in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
+        nx, ny = x + dx, y + dy
+        if 0 <= nx < rows and 0 <= ny < cols and grid[nx][ny] == "■":
+            walls += 1
+
+    return walls == 2 if (x in (0, rows - 1) and y in (0, cols - 1)) else walls == 3
 
 def solve_maze(
     grid: List[List[Union[str, int]]],
@@ -134,8 +184,33 @@ def solve_maze(
     :param grid:
     :return:
     """
+    grid = deepcopy(grid)
+    exits = get_exits(grid)
+    if len(exits) == 1:
+        return grid, exits[0]
+    elif encircled_exit(grid, exits[0]) or encircled_exit(grid, exits[1]):
+        return grid, None
 
-    pass
+    start, end = min(exits), max(exits)
+
+    grid[start[0]][start[1]] = 1
+    grid[end[0]][end[1]] = 0
+
+    rows, cols = len(grid), len(grid[0])
+    for x in range(rows):
+        for y in range(cols):
+            if grid[x][y] == " ":
+                grid[x][y] = 0
+
+    path_len = 0
+    while grid[end[0]][end[1]] == 0:
+        path_len += 1
+        grid = make_step(grid, path_len)
+        if path_len > (rows - 2) * (cols - 2):
+            return grid, None
+
+    path = shortest_path(grid, end)
+    return grid, path
 
 
 def add_path_to_grid(
