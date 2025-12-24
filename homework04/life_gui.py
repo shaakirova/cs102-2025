@@ -23,11 +23,7 @@ class GUI(UI):
         # Copy from previous assignment
         for row in range(self.life.rows):
             for col in range(self.life.cols):
-                color = (
-                    pygame.Color("green")
-                    if self.life.curr_generation[row][col] == 1
-                    else pygame.Color("white")
-                )
+                color = pygame.Color("green") if self.life.curr_generation[row][col] == 1 else pygame.Color("white")
                 pygame.draw.rect(
                     self.screen,
                     color,
