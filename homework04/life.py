@@ -100,3 +100,4 @@ class GameOfLife:
         with open(filename, 'w') as f:
             for row in self.curr_generation:
                 f.write(''.join(map(str, row)) + '\n')
+
