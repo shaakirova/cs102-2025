@@ -10,31 +10,27 @@ def create_grid(rows: int = 15, cols: int = 15) -> List[List[Union[str, int]]]:
 
 
 def remove_wall(
-    grid: List[List[Union[str, int]]], coord: Tuple[int, int]
-) -> List[List[Union[str, int]]]:
+    grid: List[List[Union[str, int]]], coord: Tuple[int, int]) -> List[List[Union[str, int]]]:
     """
 
     :param grid:
     :param coord:
     :return:
     """
-
     x, y = coord
-    rows, cols = len(grid), len(grid[0])
+    last_col = len(grid[0]) - 1
+    direction = choice(("up", "right"))
+    if direction == "up":
+        if x > 1:
+            grid[x - 1][y] = " "
+        elif y < last_col - 1:
+            grid[x][y + 1] = " "
+    else:
+        if y < last_col - 1:
+            grid[x][y + 1] = " "
+        elif x > 1:
+            grid[x - 1][y] = " "
 
-    directions: List[Tuple[int, int]] = []
-    if x - 2 >= 0:
-        directions.append((-2, 0))
-    if y + 2 < cols:
-        directions.append((0, 2))
-
-    if not directions:
-        return grid
-
-    step_x, step_y = choice(directions)
-    next_x, next_y = x + step_x, y + step_y
-    wall_x, wall_y = (x + next_x) // 2, (y + next_y) // 2
-    grid[wall_x][wall_y] = " "
     return grid
 
 
@@ -48,7 +44,6 @@ def bin_tree_maze(
     :param random_exit:
     :return:
     """
-
     grid = create_grid(rows, cols)
     empty_cells = []
     for x, row in enumerate(grid):
@@ -57,14 +52,9 @@ def bin_tree_maze(
                 grid[x][y] = " "
                 empty_cells.append((x, y))
 
-    # 1. выбрать любую клетку
-    # 2. выбрать направление: наверх или направо.
-    # Если в выбранном направлении следующая клетка лежит за границами поля,
-    # выбрать второе возможное направление
-    # 3. перейти в следующую клетку, сносим между клетками стену
-    # 4. повторять 2-3 до тех пор, пока не будут пройдены все клетки
+    for cell in empty_cells:
+        remove_wall(grid, cell)
 
-    # генерация входа и выхода
     if random_exit:
         x_in, x_out = randint(0, rows - 1), randint(0, rows - 1)
         y_in = randint(0, cols - 1) if x_in in (0, rows - 1) else choice((0, cols - 1))
@@ -73,10 +63,10 @@ def bin_tree_maze(
         x_in, y_in = 0, cols - 2
         x_out, y_out = rows - 1, 1
 
-    grid[x_in][y_in], grid[x_out][y_out] = "X", "X"
+    grid[x_in][y_in] = "X"
+    grid[x_out][y_out] = "X"
 
     return grid
-
 
 def get_exits(grid: List[List[Union[str, int]]]) -> List[Tuple[int, int]]:
     """
