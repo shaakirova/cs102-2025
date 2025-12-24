@@ -1,7 +1,8 @@
-from typing import List
 import tkinter as tk
-from tkinter import ttk, messagebox
-from maze import bin_tree_maze, solve_maze, add_path_to_grid
+from tkinter import messagebox, ttk
+from typing import List
+
+from maze import add_path_to_grid, bin_tree_maze, solve_maze
 
 CELL_SIZE = 10
 N, M = 51, 77
