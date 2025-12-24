@@ -1,5 +1,5 @@
-import tkinter as tk
 from typing import List
+import tkinter as tk
 from tkinter import ttk, messagebox
 from maze import bin_tree_maze, solve_maze, add_path_to_grid
 
