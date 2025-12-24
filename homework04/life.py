@@ -71,6 +71,7 @@ class GameOfLife:
         if self.max_generations is None:
             return False
         return self.generations >= self.max_generations
+
     @property
     def is_changing(self) -> bool:
         """
@@ -84,7 +85,7 @@ class GameOfLife:
         Прочитать состояние клеток из указанного файла.
         """
         grid = []
-        with open(filename, 'r') as f:
+        with open(filename, "r") as f:
             for line in f:
                 grid.append([int(ch) for ch in line.strip()])
         rows, cols = len(grid), len(grid[0])
@@ -96,7 +97,6 @@ class GameOfLife:
         """
         Сохранить текущее состояние клеток в указанный файл.
         """
-        with open(filename, 'w') as f:
+        with open(filename, "w") as f:
             for row in self.curr_generation:
-                f.write(''.join(map(str, row)) + '\n')
-
+                f.write("".join(map(str, row)) + "\n")

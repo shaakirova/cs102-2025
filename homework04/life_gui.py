@@ -15,9 +15,13 @@ class GUI(UI):
     def draw_lines(self) -> None:
         # Copy from previous assignment
         for x in range(0, self.width, self.cell_size):
-            pygame.draw.line(self.screen, pygame.Color("black"), (x, 0), (x, self.height))
+            pygame.draw.line(
+                self.screen, pygame.Color("black"), (x, 0), (x, self.height)
+            )
         for y in range(0, self.height, self.cell_size):
-            pygame.draw.line(self.screen, pygame.Color("black"), (0, y), (self.width, y))
+            pygame.draw.line(
+                self.screen, pygame.Color("black"), (0, y), (self.width, y)
+            )
 
     def draw_grid(self) -> None:
         # Copy from previous assignment
@@ -31,7 +35,7 @@ class GUI(UI):
                 pygame.draw.rect(
                     self.screen,
                     color,
-               (
+                    (
                         col * self.cell_size,
                         row * self.cell_size,
                         self.cell_size,
@@ -78,6 +82,7 @@ class GUI(UI):
             clock.tick(self.speed)
 
         pygame.quit()
+
 
 if __name__ == "__main__":
     life = GameOfLife((30, 60), randomize=True, max_generations=1000)

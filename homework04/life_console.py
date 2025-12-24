@@ -10,20 +10,20 @@ class Console(UI):
         super().__init__(life)
 
     def draw_borders(self, screen) -> None:
-        """ Отобразить рамку. """
+        """Отобразить рамку."""
         height, width = self.life.rows, self.life.cols
         for x in range(height + 2):
             for y in range(width + 2):
                 if x == 0 or x == height + 1:
-                    screen.addch(x, y, '-')
+                    screen.addch(x, y, "-")
                 elif y == 0 or y == width + 1:
-                    screen.addch(x, y, '|')
+                    screen.addch(x, y, "|")
 
     def draw_grid(self, screen) -> None:
-        """ Отобразить состояние клеток. """
+        """Отобразить состояние клеток."""
         for y, row in enumerate(self.life.curr_generation):
             for x, cell in enumerate(row):
-                char = '█' if cell else ' '
+                char = "█" if cell else " "
                 screen.addch(y, x, char)
 
     def run(self) -> None:
@@ -51,6 +51,7 @@ class Console(UI):
 
 if __name__ == "__main__":
     from life import GameOfLife
+
     life = GameOfLife((10, 30), randomize=True, max_generations=100)
     console_ui = Console(life)
     console_ui.run()

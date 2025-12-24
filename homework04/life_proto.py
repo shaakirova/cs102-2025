@@ -30,14 +30,18 @@ class GameOfLife:
         self.speed = speed
 
     def draw_lines(self) -> None:
-        """ Отрисовать сетку """
+        """Отрисовать сетку"""
         for x in range(0, self.width, self.cell_size):
-            pygame.draw.line(self.screen, pygame.Color("black"), (x, 0), (x, self.height))
+            pygame.draw.line(
+                self.screen, pygame.Color("black"), (x, 0), (x, self.height)
+            )
         for y in range(0, self.height, self.cell_size):
-            pygame.draw.line(self.screen, pygame.Color("black"), (0, y), (self.width, y))
+            pygame.draw.line(
+                self.screen, pygame.Color("black"), (0, y), (self.width, y)
+            )
 
     def run(self) -> None:
-        """ Запустить игру """
+        """Запустить игру"""
         pygame.init()
         clock = pygame.time.Clock()
         pygame.display.set_caption("Game of Life")
@@ -85,10 +89,7 @@ class GameOfLife:
                 [random.randint(0, 1) for _ in range(self.cell_width)]
                 for _ in range(self.cell_height)
             ]
-        return [
-            [0 for _ in range(self.cell_width)]
-            for _ in range(self.cell_height)
-        ]
+        return [[0 for _ in range(self.cell_width)] for _ in range(self.cell_height)]
 
     def draw_grid(self) -> None:
         """
@@ -166,6 +167,7 @@ class GameOfLife:
                         new_grid[row][col] = 1
 
         return new_grid
+
 
 if __name__ == "__main__":
     game = GameOfLife(640, 480, 10, 10)
